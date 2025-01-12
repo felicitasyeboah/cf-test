@@ -47,7 +47,12 @@ jobs:
       # Step: Run Google Java Format Check
       - name: Check code formatting
         run: mvn fmt:check
-
+      - name: Cache SonarQube packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
       # Step 6: Install dependencies and build the project
       - name: Install dependencies and build project
         run: mvn clean install
@@ -77,12 +82,10 @@ jobs:
       #          path: target/site/jacoco/jacoco.xml
 
       - name: SonarCloud Analysis
-        run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=cf-test
         env:
-          SONAR_HOST_URL: https://sonarcloud.io
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_KEY: cf-test
-          SONAR_ORG_KEY: ${{ secrets.SONAR_ORG_KEY }}
+
 
       # Step 10: Tear down MySQL
       - name: Tear down MySQL
