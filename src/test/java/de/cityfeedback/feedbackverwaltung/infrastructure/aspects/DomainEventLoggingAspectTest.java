@@ -43,8 +43,8 @@ class DomainEventLoggingAspectTest {
 
     aspect.logAfterReturning(joinPoint, "result");
 
-    verify(logger).info("Methode zurückgegeben: methodName");
-    verify(logger).info("Ergebnis: result");
+    verify(logger).info("Methode zurückgegeben: {}", "methodName");
+    verify(logger).info("Ergebnis: {}", "result");
   }
 
   @Test
