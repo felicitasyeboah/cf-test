@@ -75,7 +75,13 @@ jobs:
       #        with:
       #          name: jacoco-coverage-report
       #          path: target/site/jacoco/jacoco.xml
-
+      - name: SonarCloud Analysis
+        run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+        env:
+          SONAR_HOST_URL: https://sonarcloud.io
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_PROJECT_KEY: "cf-test"
+          SONAR_ORGANIZATION: "felicitasyeboah"
       # Step 10: Tear down MySQL
       - name: Tear down MySQL
         run: |
