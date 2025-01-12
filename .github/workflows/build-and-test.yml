@@ -80,7 +80,7 @@ jobs:
         env:
           SONAR_HOST_URL: https://sonarcloud.io
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_KEY: mse-gruppe12
+          SONAR_PROJECT_KEY: cf-test
           SONAR_ORGANIZATION: felicitasyeboah
       # Step 10: Tear down MySQL
       - name: Tear down MySQL
@@ -101,7 +101,7 @@ jobs:
         env:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_KEY: mse-gruppe12
+          SONAR_PROJECT_KEY: cf-test
           SONAR_ORG_KEY: felicitasyeboah
 
   code-scanning:
