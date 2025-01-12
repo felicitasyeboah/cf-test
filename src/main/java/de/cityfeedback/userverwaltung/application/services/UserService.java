@@ -1,32 +1,29 @@
 package de.cityfeedback.userverwaltung.application.services;
 
-import de.cityfeedback.userverwaltung.domain.model.User;
-import de.cityfeedback.userverwaltung.domain.events.UserLoggedInEvent;
-import de.cityfeedback.userverwaltung.infrastructure.repositories.UserRepository;
 import de.cityfeedback.shared.validator.Validation;
-
+import de.cityfeedback.userverwaltung.domain.events.UserLoggedInEvent;
+import de.cityfeedback.userverwaltung.domain.model.User;
+import de.cityfeedback.userverwaltung.infrastructure.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+import java.util.Optional;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
 public class UserService {
-    private final UserRepository userRepository;
-    public final ApplicationEventPublisher eventPublisher;
+  private final UserRepository userRepository;
+  public final ApplicationEventPublisher eventPublisher;
 
-    public UserService(UserRepository userRepository, ApplicationEventPublisher eventPublisher) {
-        this.eventPublisher = eventPublisher;
-        this.userRepository = userRepository;
-    }
+  public UserService(UserRepository userRepository, ApplicationEventPublisher eventPublisher) {
+    this.eventPublisher = eventPublisher;
+    this.userRepository = userRepository;
+  }
 
-    //!!!Event ergänzen
-    //public final ApplicationEventPublisher eventPublisher;
+  // !!!Event ergänzen
+  // public final ApplicationEventPublisher eventPublisher;
 
-    //!!! Event ergänzen
-    /*public UserService(UserRepository userRepository, ApplicationEventPublisher eventPublisher) {
+  // !!! Event ergänzen
+  /*public UserService(UserRepository userRepository, ApplicationEventPublisher eventPublisher) {
         this.userRepository = userRepository;
         this.eventPublisher = eventPublisher;
     }
@@ -51,45 +48,40 @@ public class UserService {
 
     */
 
-    @Transactional
-    public boolean loginUser (String email, String password){
+  @Transactional
+  public boolean loginUser(String email, String password) {
 
-            // Validate email
-            Validation.validateEmail(email);
+    // Validate email
+    Validation.validateEmail(email);
 
-            System.out.println(email + " " + password);
+    System.out.println(email + " " + password);
 
-            // Datenbankabfrage simulieren
-            Optional<User> optionalUser = userRepository.findByEmail(email);
+    // Datenbankabfrage simulieren
+    Optional<User> optionalUser = userRepository.findByEmail(email);
 
-            // Benutzer nicht gefunden
-            if (optionalUser.isEmpty()) {
-                return false;
-            }
+    // Benutzer nicht gefunden
+    if (optionalUser.isEmpty()) {
+      return false;
+    }
 
-            // Benutzer extrahieren
-            User user = optionalUser.get();
+    // Benutzer extrahieren
+    User user = optionalUser.get();
 
-            UserLoggedInEvent event =
-                new UserLoggedInEvent(
-                        user.getId(),
-                        user.getEmail(),
-                         user.getPassword(),
-                        user.getRole(), user.getUserName()
-                        );
+    UserLoggedInEvent event =
+        new UserLoggedInEvent(
+            user.getId(), user.getEmail(), user.getPassword(), user.getRole(), user.getUserName());
 
+    // Passwort prüfen
+    boolean loginSuccessful = password.equals(user.getPassword());
+    userRepository.save(user);
+    if (loginSuccessful) {
+      eventPublisher.publishEvent(event);
+    }
+    return loginSuccessful;
 
-            // Passwort prüfen
-            boolean loginSuccessful = password.equals(user.getPassword());
-            userRepository.save(user);
-            if (loginSuccessful) {
-                eventPublisher.publishEvent(event);
-            }
-            return loginSuccessful;
+    // Validate password
+    // !! anpassen wenn Passwort gehasht wird: return passwordEncoder.matches(password.plainText(),
+    // user.getPassword());
 
-        // Validate password
-            //!! anpassen wenn Passwort gehasht wird: return passwordEncoder.matches(password.plainText(), user.getPassword());
-
-        }
-
+  }
 }
