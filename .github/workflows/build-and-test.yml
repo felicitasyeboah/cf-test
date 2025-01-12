@@ -1,46 +1,41 @@
-# Einfache CI Pipeline 
-
 name: CI Pipeline
 
-# Wann soll die CI - Pipeline ausgeführt werden?
+# Trigger Conditions
 on:
-  # Der Workflow wird bei jedem Push oder Pull Request ausgeführt (nur der main-Branch)
   push:
-    branches: [ "main", "felicitas" ]
+    branches: [ "dev" ]
   pull_request:
     branches: [ "main" ]
-
-  # Workflow kann auch manuell in "Actions" aufgerufen werden
   workflow_dispatch:
 
 jobs:
-  # Dieser workflow enthält die jobs "build" und "test"
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checke den Code aus dem Repository aus
+      # Step 1: Check out the code
       - name: Checkout source code
         uses: actions/checkout@v4.2.2
 
-      # 2. Rufe die passende Version von JDK auf
+      # Step 2: Set up Java 17
       - name: Set up JDK
         uses: actions/setup-java@v4.5.0
         with:
           distribution: 'corretto'
           java-version: '17'
-      # 3. Install Docker Compose
+
+      # Step 3: Install Docker Compose
       - name: Install Docker Compose
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version
 
-      # 4. Start Docker Compose
+      # Step 4: Start Docker Compose (MySQL container)
       - name: Start Docker Compose
         run: docker-compose up -d
 
-      # 5. Wait for MySQL to be Ready
+      # Step 5: Wait for MySQL to be ready
       - name: Wait for MySQL
         run: |
           for i in {1..10}; do
@@ -49,17 +44,63 @@ jobs:
           sleep 5
           done
 
-      # 6. Installiere die Projektabhängigkeiten
+      # Step: Run Google Java Format Check
+      - name: Check code formatting
+        run: mvn fmt:check
+
+      # Step 6: Install dependencies and build the project
       - name: Install dependencies and build project
         run: mvn clean install
 
-      # 7 Führe automatisierte Tests aus
+      # Step 7: Run automated tests
       - name: Run tests
         run: mvn test
 
-      # 8. Tear down MySQL
+      # Step 8: Generate code coverage report
+      - name: Generate code coverage
+        run: mvn jacoco:report
+
+      # Step 9: Upload coverage report to pull request
+      - name: Upload Coverage Report
+        uses: actions/coverage-reporter@v1
+        with:
+          coverage_file: target/site/jacoco/jacoco.xml
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step 10: Tear down MySQL
       - name: Tear down MySQL
         run: |
           docker-compose down -v
 
+  static-code-analysis:
+    runs-on: ubuntu-latest
 
+    steps:
+      # Step 1: Check out the code
+      - name: Checkout source code
+        uses: actions/checkout@v4.2.2
+
+      # Step 2: Run SonarQube Analysis
+      - name: Run SonarQube analysis
+        uses: sonarsource/sonarqube-scan-action@v2
+        env:
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  code-scanning:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the code
+      - name: Checkout source code
+        uses: actions/checkout@v4.2.2
+
+      # Step 2: Initialize CodeQL for code scanning
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: java
+
+      # Step 3: Perform CodeQL analysis
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v2
