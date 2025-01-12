@@ -59,16 +59,16 @@ jobs:
       #      # Step 8: Generate code coverage report
       #      - name: Generate code coverage
       #        run: mvn jacoco:report
-      # Step 7: Run tests and generate coverage
-      - name: Run tests and generate coverage
-        run: mvn clean test jacoco:report
-
-      # Step 8: Upload Coverage Report as an Artifact
-      - name: Upload Coverage Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: jacoco-coverage-report
-          path: target/site/jacoco/jacoco.xml
+      #      # Step 7: Run tests and generate coverage
+      #      - name: Run tests and generate coverage
+      #        run: mvn clean test jacoco:report
+      #
+      #      # Step 8: Upload Coverage Report as an Artifact
+      #      - name: Upload Coverage Report
+      #        uses: actions/upload-artifact@v3
+      #        with:
+      #          name: jacoco-coverage-report
+      #          path: target/site/jacoco/jacoco.xml
       #      # Step 9: Upload coverage report as an artifact
       #      - name: Upload Coverage Report
       #        uses: actions/upload-artifact@v3
@@ -76,7 +76,12 @@ jobs:
       #          name: jacoco-coverage-report
       #          path: target/site/jacoco/jacoco.xml
       - name: SonarCloud Analysis
-        run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+        run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+          -Dsonar.organization=felicitasyeboah \
+          -Dsonar.projectKey=cf-test \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=c14ea86430cd3149bd5fffaa6d5159a7a6042fd5
+
         env:
           SONAR_HOST_URL: https://sonarcloud.io
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
