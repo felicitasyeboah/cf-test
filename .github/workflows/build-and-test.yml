@@ -52,20 +52,29 @@ jobs:
       - name: Install dependencies and build project
         run: mvn clean install
 
-      # Step 7: Run automated tests
-      - name: Run tests
-        run: mvn test
+      #      # Step 7: Run automated tests
+      #      - name: Run tests
+      #        run: mvn test
+      #
+      #      # Step 8: Generate code coverage report
+      #      - name: Generate code coverage
+      #        run: mvn jacoco:report
+      # Step 7: Run tests and generate coverage
+      - name: Run tests and generate coverage
+        run: mvn clean test jacoco:report
 
-      # Step 8: Generate code coverage report
-      - name: Generate code coverage
-        run: mvn jacoco:report
-
-      # Step 9: Upload coverage report as an artifact
+      # Step 8: Upload Coverage Report as an Artifact
       - name: Upload Coverage Report
         uses: actions/upload-artifact@v3
         with:
           name: jacoco-coverage-report
           path: target/site/jacoco/jacoco.xml
+      #      # Step 9: Upload coverage report as an artifact
+      #      - name: Upload Coverage Report
+      #        uses: actions/upload-artifact@v3
+      #        with:
+      #          name: jacoco-coverage-report
+      #          path: target/site/jacoco/jacoco.xml
 
       # Step 10: Tear down MySQL
       - name: Tear down MySQL
