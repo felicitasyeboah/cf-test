@@ -60,12 +60,12 @@ jobs:
       - name: Generate code coverage
         run: mvn jacoco:report
 
-      # Step 9: Upload coverage report to pull request
+      # Step 9: Upload coverage report as an artifact
       - name: Upload Coverage Report
-        uses: actions/coverage-reporter@v1
+        uses: actions/upload-artifact@v3
         with:
-          coverage_file: target/site/jacoco/jacoco.xml
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          name: jacoco-coverage-report
+          path: target/site/jacoco/jacoco.xml
 
       # Step 10: Tear down MySQL
       - name: Tear down MySQL
