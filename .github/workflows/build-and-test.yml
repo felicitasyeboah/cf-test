@@ -86,6 +86,8 @@ jobs:
         env:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_PROJECT_KEY: "cf-test"
+          SONAR_ORG_KEY: "felicitasyeboah"
 
   code-scanning:
     runs-on: ubuntu-latest
