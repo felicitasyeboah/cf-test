@@ -82,7 +82,7 @@ jobs:
           SONAR_HOST_URL: https://sonarcloud.io
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_PROJECT_KEY: cf-test
-          SONAR_ORG_KEY: felicitasyeboah
+          SONAR_ORG_KEY: ${{ secrets.SONAR_ORG_KEY }}
 
       # Step 10: Tear down MySQL
       - name: Tear down MySQL
