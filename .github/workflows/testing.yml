@@ -48,13 +48,9 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # Step 5: Verify Google Java Format
-      - name: Check code format
-        run: |
-          curl -LJO https://github.com/google/google-java-format/releases/download/v1.15.0/google-java-format-1.15.0-all-deps.jar
-          java -jar google-java-format-1.15.0-all-deps.jar --dry-run --set-exit-if-changed $(find . -name "*.java")
-        env:
-          JAVA_HOME: ${{ env.JAVA_HOME }}
+      # Step: Run Google Java Format Check
+      - name: Check code formatting
+        run: mvn fmt:check
 
       # Step 6: Build and run tests with Maven
       - name: Build and run tests
