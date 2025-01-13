@@ -19,12 +19,12 @@ jobs:
           java-version: '17'
 
       - name: Setup MySQL Docker container
-        uses: docker/compose@v2
+        uses: docker/compose@v3
         with:
           build: ./docker-compose.yml
 
       - name: Google Java Format
-        uses: google-java-format/google-java-format-action@v1
+        uses: google-java-format/google-java-format-action@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
