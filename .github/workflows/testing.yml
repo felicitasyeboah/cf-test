@@ -33,7 +33,7 @@ jobs:
       - name: Wait for MySQL to be ready
         run: |
           for i in {1..30}; do
-            if docker exec $(docker-compose ps -q mysql) mysqladmin ping --host=mysql --user=user --password=pass --silent; then
+            if docker exec $(docker-compose ps -q mysqldb) mysqladmin ping --host=mysqldb --user=user --password=pass --silent; then
               echo "MySQL is ready!"
               break
             fi
@@ -77,4 +77,4 @@ jobs:
 
       # Step 9: Stop Docker Compose
       - name: Stop Docker Compose
-        run: docker-compose -f docker-compose.yml down
+        run: docker-compose -f docker-compose.yaml down
