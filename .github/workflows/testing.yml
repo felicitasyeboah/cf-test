@@ -26,7 +26,7 @@ jobs:
 
       # Step 3: Set up Docker Compose
       - name: Set up Docker Compose
-        run: docker-compose -f docker-compose.yml up -d
+        run: docker-compose -f docker-compose.yaml up -d
 
 
         # Step 3: Wait for MySQL to be ready
