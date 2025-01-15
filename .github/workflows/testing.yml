@@ -52,9 +52,9 @@ jobs:
       - name: Build, Validate, Test and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn verify sonar:sonar \
+        run: mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar  \
           -Dsonar.projectKey=cf-test \
-          -Dsonar.branch.name=dev
+        # -Dsonar.branch.name=dev
 
       # Step 7: Analyze code coverage with JaCoCo
       - name: Generate code coverage report
