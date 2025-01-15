@@ -48,28 +48,28 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # Step: Run Google Java Format Check
-      - name: Check code formatting
-        run: mvn fmt:check
-
-      # Step 6: Build and run tests with Maven
-      - name: Build and run tests
-        run: mvn clean verify
+      - name: Build, Validate, Test and analyze
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn verify sonar:sonar \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.organization=felicitasyeboah \
+          -Dsonar.projectKey=cf-test
 
       # Step 7: Analyze code coverage with JaCoCo
       - name: Generate code coverage report
         run: mvn jacoco:report
 
-      # Step 8: Perform static code analysis (e.g., with SonarQube)
-      - name: Static code analysis
-        uses: sonarsource/sonarcloud-github-action@v1
-        with:
-          projectBaseDir: '.'
-          args: >
-            -Dsonar.projectKey=cf-test
-            -Dsonar.organization=felicitasyeboah
-            -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      #      # Step 8: Perform static code analysis (e.g., with SonarQube)
+      #      - name: Static code analysis
+      #        uses: sonarsource/sonarcloud-github-action@v1
+      #        with:
+      #          projectBaseDir: '.'
+      #          args: >
+      #            -Dsonar.projectKey=cf-test
+      #            -Dsonar.organization=felicitasyeboah
+      #            -Dsonar.host.url=https://sonarcloud.io
+      #            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
       # Step 9: Stop Docker Compose
       - name: Stop Docker Compose
