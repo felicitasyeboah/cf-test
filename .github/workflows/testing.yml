@@ -52,10 +52,8 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn verify sonar:sonar \
-          -Dsonar.host.url=${{ secrets.SONAR_HOST }} \
-          -Dsonar.organization=${{ secrets.SONAR_ORG_KEY }} \
           -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
-        #-Dsonar.branch.name=dev
+          -Dsonar.branch.name=dev
 
       # Step 7: Analyze code coverage with JaCoCo
       - name: Generate code coverage report
