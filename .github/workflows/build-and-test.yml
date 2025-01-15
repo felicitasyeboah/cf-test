@@ -76,7 +76,7 @@ jobs:
           path: target/site/jacoco/jacoco.xml
 
       - name: SonarCloud Analysis
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=cf-test
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=cf-test -Pcoverage
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 

@@ -52,7 +52,7 @@ jobs:
       - name: Build, Validate, Test and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=cf-test \
+        run: mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=cf-test -Pcoverage
 
       # Step 9: Stop Docker Compose
       - name: Stop Docker Compose
