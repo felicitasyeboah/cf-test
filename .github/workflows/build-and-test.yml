@@ -74,12 +74,6 @@ jobs:
         with:
           name: jacoco-coverage-report
           path: target/site/jacoco/jacoco.xml
-      #      # Step 9: Upload coverage report as an artifact
-      #      - name: Upload Coverage Report
-      #        uses: actions/upload-artifact@v3
-      #        with:
-      #          name: jacoco-coverage-report
-      #          path: target/site/jacoco/jacoco.xml
 
       - name: SonarCloud Analysis
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=cf-test
