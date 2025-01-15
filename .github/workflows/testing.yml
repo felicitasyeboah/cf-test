@@ -52,7 +52,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn verify sonar:sonar \
-          -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
+          -Dsonar.projectKey=cf-test \
           -Dsonar.branch.name=dev
 
       # Step 7: Analyze code coverage with JaCoCo
