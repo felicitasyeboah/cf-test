@@ -8,6 +8,7 @@ on:
   pull_request:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
   build:
@@ -52,9 +53,7 @@ jobs:
       - name: Build, Validate, Test and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar  \
-          -Dsonar.projectKey=cf-test \
-        # -Dsonar.branch.name=dev
+        run: mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=cf-test \
 
       # Step 7: Analyze code coverage with JaCoCo
       - name: Generate code coverage report
