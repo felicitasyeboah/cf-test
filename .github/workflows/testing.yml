@@ -54,7 +54,7 @@ jobs:
         run: mvn verify sonar:sonar \
           -Dsonar.host.url=${{ secrets.SONAR_HOST }} \
           -Dsonar.organization=${{ secrets.SONAR_ORG_KEY }} \
-          -Dsonar.projectKey=felicitasyeboah_cf-test
+          -Dsonar.projectKey=de.cityfeedback:cf-test
         #-Dsonar.branch.name=dev
 
       # Step 7: Analyze code coverage with JaCoCo

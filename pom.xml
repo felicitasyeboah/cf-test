@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>de.cityfeedback</groupId>
-    <artifactId>felicitasyeboah_cf-test</artifactId>
+    <artifactId>cf-test</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>citfeedback</name>
     <description>Cityfeedback Project der Gruppe 12 im Modul MSE</description>
