@@ -3,7 +3,6 @@ name: CI Pipeline for Spring Boot
 on:
   push:
     branches:
-      - dev
       - master
   pull_request:
     branches:
