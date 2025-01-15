@@ -3,9 +3,9 @@ name: CI Pipeline
 # Trigger Conditions
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "dev", "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
   workflow_dispatch:
 
 jobs:
@@ -74,15 +74,9 @@ jobs:
         with:
           name: jacoco-coverage-report
           path: target/site/jacoco/jacoco.xml
-      #      # Step 9: Upload coverage report as an artifact
-      #      - name: Upload Coverage Report
-      #        uses: actions/upload-artifact@v3
-      #        with:
-      #          name: jacoco-coverage-report
-      #          path: target/site/jacoco/jacoco.xml
 
       - name: SonarCloud Analysis
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=cf-test
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=cf-test -Pcoverage
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
