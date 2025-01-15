@@ -55,6 +55,7 @@ jobs:
           -Dsonar.host.url=${{ secrets.SONAR_HOST }} \
           -Dsonar.organization=${{ secrets.SONAR_ORG_KEY }} \
           -Dsonar.projectKey=cf-test
+          -Dsonar.branch.name=dev
 
       # Step 7: Analyze code coverage with JaCoCo
       - name: Generate code coverage report
