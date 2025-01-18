@@ -26,8 +26,8 @@ public class FeedbackService {
   public Feedback createFeedback(
       String title, String content, Long citizenId, FeedbackCategory category) {
 
-            Feedback feedback = new Feedback(title, content, category, new CitizenId(citizenId));
-    feedback =      this.feedbackRepository.save(feedback);
+    Feedback feedback = new Feedback(title, content, category, new CitizenId(citizenId));
+    feedback = this.feedbackRepository.save(feedback);
 
     // Create the domain event
     FeedbackCreatedEvent event =
@@ -41,8 +41,7 @@ public class FeedbackService {
             feedback.getCreatedAt());
 
     // Publish the event
-    eventPublisher
-            .publishEvent(event);
+    eventPublisher.publishEvent(event);
 
     return feedback;
   }
