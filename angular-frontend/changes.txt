@@ -1,1 +1,2 @@
  M angular-frontend/changes.txt
+ M angular-frontend/src/app/feedback-form/feedback-form.component.ts
