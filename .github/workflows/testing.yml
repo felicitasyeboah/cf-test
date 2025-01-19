@@ -8,11 +8,6 @@ on:
     branches:
       - master
   workflow_dispatch:
-permissions:
-  contents: read
-  pages: write
-  issues: write
-  pull-requests: write
 jobs:
   backend-verify-test-analyse:
     name: Backend - Verify, Test, and Analyze Java Code
