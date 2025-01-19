@@ -94,6 +94,9 @@ jobs:
       - name: Check for Changes
         working-directory: angular-frontend
         run: |
+          echo "Current directory: $(pwd)"
+          git status
+          git status --porcelain
           if [ -n "$(git status --porcelain)" ]; then
             echo "changes=true" >> $GITHUB_ENV
           else
