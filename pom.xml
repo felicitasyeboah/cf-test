@@ -138,18 +138,19 @@
                 <version>0.8.10</version>
                 <executions>
                     <!-- Prepare Jacoco for Test Execution -->
-                    <execution>
-                        <id>prepare-agent</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
 <!--                    <execution>-->
+<!--                        <id>prepare-agent</id>-->
+<!--                        <phase>prepare-package</phase>-->
 <!--                        <goals>-->
 <!--                            <goal>prepare-agent</goal>-->
 <!--                        </goals>-->
 <!--                    </execution>-->
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <!-- Generate Jacoco Report -->
                     <execution>
                         <id>report</id>
                         <phase>verify</phase>
