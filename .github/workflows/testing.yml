@@ -86,4 +86,4 @@ jobs:
       # Step 5: Run linting on the Angular project
       - name: Run Lint
         working-directory: angular-frontend
-        run: ng:fix
+        run: ng lint:fix
