@@ -89,12 +89,12 @@ jobs:
       - name: Run Lint
         working-directory: angular-frontend
         run: npm run lint:fix
+
       # Step 6: Check for changes made by lint:fix
       - name: Check for Changes
         working-directory: angular-frontend
         run: |
-          git status --porcelain > changes.txt
-          if [ -s changes.txt ]; then
+          if [ -n "$(git status --porcelain)" ]; then
             echo "changes=true" >> $GITHUB_ENV
           else
             echo "changes=false" >> $GITHUB_ENV
@@ -110,7 +110,8 @@ jobs:
           git add .
           git commit -m "fix: auto-fix lint errors"
           
-          # Checkout the PR branch explicitly before pushing
+          # Checkout the PR branch explicitly before pushing to ensure we are on the correct branch
           git checkout ${{ github.head_ref }}
           
+          # Push changes to the pull request branch
           git push origin ${{ github.head_ref }}
