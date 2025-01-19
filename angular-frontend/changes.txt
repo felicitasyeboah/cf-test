@@ -1,3 +1,1 @@
- M angular-frontend/src/app/feedback-form/feedback-form.component.ts
- M angular-frontend/src/app/feedback-list/feedback-list.component.ts
-?? angular-frontend/changes.txt
+ M angular-frontend/changes.txt
