@@ -66,6 +66,9 @@ jobs:
       # Step 1: Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+
 
       # Step 2: Set up Node.js (required for Angular)
       - name: Set up Node.js
