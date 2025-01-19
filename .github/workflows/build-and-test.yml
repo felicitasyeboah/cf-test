@@ -1,106 +1,106 @@
-name: CI Pipeline
-
-# Trigger Conditions
-on:
-  push:
-    branches: [ "dev", "master" ]
-  pull_request:
-    branches: [ "master" ]
-  workflow_dispatch:
-
-jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-
-    steps:
-      # Step 1: Check out the code
-      - name: Checkout source code
-        uses: actions/checkout@v4.2.2
-
-      # Step 2: Set up Java 17
-      - name: Set up JDK
-        uses: actions/setup-java@v4.5.0
-        with:
-          distribution: 'corretto'
-          java-version: '17'
-
-      # Step 3: Install Docker Compose
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose --version
-
-      # Step 4: Start Docker Compose (MySQL container)
-      - name: Start Docker Compose
-        run: docker-compose up -d
-
-      # Step 5: Wait for MySQL to be ready
-      - name: Wait for MySQL
-        run: |
-          for i in {1..10}; do
-          docker exec mysqldb mysqladmin ping -h localhost --silent && break
-          echo "Waiting for MySQL..."
-          sleep 5
-          done
-
-      # Step: Run Google Java Format Check
-      - name: Check code formatting
-        run: mvn fmt:check
-      - name: Cache SonarQube packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      # Step 6: Install dependencies and build the project
-      - name: Install dependencies and build project
-        run: mvn clean install
-
-      #      # Step 7: Run automated tests
-      #      - name: Run tests
-      #        run: mvn test
-      #
-      #      # Step 8: Generate code coverage report
-      #      - name: Generate code coverage
-      #        run: mvn jacoco:report
-      # Step 7: Run tests and generate coverage
-      - name: Run tests and generate coverage
-        run: mvn clean test jacoco:report
-
-      # Step 8: Upload Coverage Report as an Artifact
-      - name: Upload Coverage Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: jacoco-coverage-report
-          path: target/site/jacoco/jacoco.xml
-
-      - name: SonarCloud Analysis
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=cf-test -Pcoverage
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-
-      # Step 10: Tear down MySQL
-      - name: Tear down MySQL
-        run: |
-          docker-compose down -v
-
-
-  code-scanning:
-    runs-on: ubuntu-latest
-
-    steps:
-      # Step 1: Check out the code
-      - name: Checkout source code
-        uses: actions/checkout@v4.2.2
-
-      # Step 2: Initialize CodeQL for code scanning
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          languages: java
-
-      # Step 3: Perform CodeQL analysis
-      - name: Perform CodeQL analysis
-        uses: github/codeql-action/analyze@v2
+#name: CI Pipeline
+#
+## Trigger Conditions
+#on:
+#  push:
+#    branches: [ "dev", "master" ]
+#  pull_request:
+#    branches: [ "master" ]
+#  workflow_dispatch:
+#
+#jobs:
+#  build-and-test:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      # Step 1: Check out the code
+#      - name: Checkout source code
+#        uses: actions/checkout@v4.2.2
+#
+#      # Step 2: Set up Java 17
+#      - name: Set up JDK
+#        uses: actions/setup-java@v4.5.0
+#        with:
+#          distribution: 'corretto'
+#          java-version: '17'
+#
+#      # Step 3: Install Docker Compose
+#      - name: Install Docker Compose
+#        run: |
+#          sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#          sudo chmod +x /usr/local/bin/docker-compose
+#          docker-compose --version
+#
+#      # Step 4: Start Docker Compose (MySQL container)
+#      - name: Start Docker Compose
+#        run: docker-compose up -d
+#
+#      # Step 5: Wait for MySQL to be ready
+#      - name: Wait for MySQL
+#        run: |
+#          for i in {1..10}; do
+#          docker exec mysqldb mysqladmin ping -h localhost --silent && break
+#          echo "Waiting for MySQL..."
+#          sleep 5
+#          done
+#
+#      # Step: Run Google Java Format Check
+#      - name: Check code formatting
+#        run: mvn fmt:check
+#      - name: Cache SonarQube packages
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.sonar/cache
+#          key: ${{ runner.os }}-sonar
+#          restore-keys: ${{ runner.os }}-sonar
+#      # Step 6: Install dependencies and build the project
+#      - name: Install dependencies and build project
+#        run: mvn clean install
+#
+#      #      # Step 7: Run automated tests
+#      #      - name: Run tests
+#      #        run: mvn test
+#      #
+#      #      # Step 8: Generate code coverage report
+#      #      - name: Generate code coverage
+#      #        run: mvn jacoco:report
+#      # Step 7: Run tests and generate coverage
+#      - name: Run tests and generate coverage
+#        run: mvn clean test jacoco:report
+#
+#      # Step 8: Upload Coverage Report as an Artifact
+#      - name: Upload Coverage Report
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: jacoco-coverage-report
+#          path: target/site/jacoco/jacoco.xml
+#
+#      - name: SonarCloud Analysis
+#        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=cf-test -Pcoverage
+#        env:
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#
+#
+#      # Step 10: Tear down MySQL
+#      - name: Tear down MySQL
+#        run: |
+#          docker-compose down -v
+#
+#
+#  code-scanning:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      # Step 1: Check out the code
+#      - name: Checkout source code
+#        uses: actions/checkout@v4.2.2
+#
+#      # Step 2: Initialize CodeQL for code scanning
+#      - name: Initialize CodeQL
+#        uses: github/codeql-action/init@v2
+#        with:
+#          languages: java
+#
+#      # Step 3: Perform CodeQL analysis
+#      - name: Perform CodeQL analysis
+#        uses: github/codeql-action/analyze@v2
