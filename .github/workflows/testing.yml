@@ -10,7 +10,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  verify-test-analyse-backend:
+  backend-verify-test-analyse:
+    name: Verify, Test, and Analyze Java Backend
     runs-on: ubuntu-latest
 
     steps:
@@ -57,20 +58,32 @@ jobs:
       # Step 9: Stop Docker Compose
       - name: Stop Docker Compose
         run: docker-compose -f docker-compose.yaml down
-  lint-frontend:
-    name: Lint Angular Code
+  frontend-lint:
+    name: Run Lint on Frontend Angular Project
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Code
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
+      # Step 2: Set up Node.js (required for Angular)
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '18' # Adjust based on your Angular project's Node.js version
 
+      # Step 3: Navigate to the Angular project folder
+      - name: Change Directory to Angular Project
+        working-directory: angular-frontend
+        run: pwd # Optional: Debugging step to confirm the current directory
+
+      # Step 4: Install dependencies for the Angular project
       - name: Install Dependencies
+        working-directory: angular-project
         run: npm install
 
+      # Step 5: Run linting on the Angular project
       - name: Run Lint
+        working-directory: angular-project
         run: npm run lint
