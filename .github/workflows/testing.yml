@@ -100,7 +100,7 @@ jobs:
             echo "changes=false" >> $GITHUB_ENV
           fi
 
-      # Step 7: Commit and push changes if any testing
+      # Step 7: Commit and push changes if any
       - name: Commit and Push Changes
         if: env.changes == 'true'
         working-directory: angular-frontend
