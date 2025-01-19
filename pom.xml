@@ -20,8 +20,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-<!--        <sonar.organization>felicitasyeboah</sonar.organization>-->
-<!--        <sonar.host.url>https://sonarcloud.io</sonar.host.url>-->
+        <sonar.organization>felicitasyeboah</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
         <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
@@ -121,16 +121,16 @@
                     </execution>
                 </executions>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.sonarsource.scanner.maven</groupId>-->
-<!--                <artifactId>sonar-maven-plugin</artifactId>-->
-<!--                <version>3.11.0.3922</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>verify</phase>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.11.0.3922</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                    </execution>
+                </executions>
+            </plugin>
 
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -150,8 +150,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
-                            <xml>true</xml> <!-- Generate XML report -->
-                            <html>false</html> <!-- Disable HTML report if not needed -->
+                            <formats>XML</formats>
                         </configuration>
                     </execution>
                 </executions>
