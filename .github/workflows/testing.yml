@@ -1,4 +1,4 @@
-name: CI Pipeline for Spring Boot
+name: CI Pipeline for CityFeedback Project with Spring Boot and Angular
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   backend-verify-test-analyse:
-    name: Verify, Test, and Analyze Java Backend
+    name: Backend - Verify, Test, and Analyze Java Code
     runs-on: ubuntu-latest
 
     steps:
@@ -59,7 +59,7 @@ jobs:
       - name: Stop Docker Compose
         run: docker-compose -f docker-compose.yaml down
   frontend-lint:
-    name: Run Lint on Frontend Angular Project
+    name: Frontend - Run Lint for Angular Project
     runs-on: ubuntu-latest
 
     steps:
@@ -80,10 +80,10 @@ jobs:
 
       # Step 4: Install dependencies for the Angular project
       - name: Install Dependencies
-        working-directory: angular-project
+        working-directory: angular-frontend
         run: npm install
 
       # Step 5: Run linting on the Angular project
       - name: Run Lint
-        working-directory: angular-project
+        working-directory: angular-frontend
         run: npm run lint
